@@ -1,0 +1,26 @@
+{
+  "name": "todo-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.6.3",
+    "@connectrpc/connect": "^2.1.0",
+    "@connectrpc/connect-web": "^2.1.0",
+    "@connectrpc/protoc-gen-connect-es": "^1.7.0",
+    "@types/react": "^19.1.13",
+    "next": "^15.5.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.57.0",
+    "@bufbuild/protoc-gen-es": "^2.8.0",
+    "@types/node": "24.4.0"
+  }
+}
