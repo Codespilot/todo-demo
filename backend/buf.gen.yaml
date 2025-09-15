@@ -1,8 +1,13 @@
-version: v1
+version: v2
+clean: true
+inputs:
+  - directory: "../proto"
 plugins:
-  - plugin: go
+  - local: protoc-gen-go
     out: gen
-    opt: paths=source_relative
-  - plugin: connect-go
+    opt:
+      - paths=source_relative
+  - local: protoc-gen-connect-go
     out: gen
-    opt: paths=source_relative
+    opt:
+      - paths=source_relative

@@ -7,6 +7,7 @@ option go_package = "tododemo/gen/todo/v1;todov1";
 service TodoService {
   rpc AddTask(AddTaskRequest) returns (AddTaskResponse);
   rpc GetTasks(GetTasksRequest) returns (GetTasksResponse);
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
 }
 
 message AddTaskRequest {
@@ -21,6 +22,14 @@ message GetTasksRequest {}
 
 message GetTasksResponse {
   repeated Task tasks = 1;
+}
+
+message DeleteTaskRequest {
+  int32 id = 1;
+}
+
+message DeleteTaskResponse {
+  bool success = 1;
 }
 
 message Task {

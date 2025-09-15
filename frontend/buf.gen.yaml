@@ -1,7 +1,7 @@
 version: v2
 clean: true
 inputs:
-  - directory: "proto"
+  - directory: "../proto"
 plugins:
   - local: protoc-gen-es
     out: gen

@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file todo.proto.
  */
 export const file_todo: GenFile = /*@__PURE__*/
-  fileDesc("Cgp0b2RvLnByb3RvEgd0b2RvLnYxIh4KDkFkZFRhc2tSZXF1ZXN0EgwKBHRleHQYASABKAkiLgoPQWRkVGFza1Jlc3BvbnNlEhsKBHRhc2sYASABKAsyDS50b2RvLnYxLlRhc2siEQoPR2V0VGFza3NSZXF1ZXN0IjAKEEdldFRhc2tzUmVzcG9uc2USHAoFdGFza3MYASADKAsyDS50b2RvLnYxLlRhc2siIAoEVGFzaxIKCgJpZBgBIAEoBRIMCgR0ZXh0GAIgASgJMowBCgtUb2RvU2VydmljZRI8CgdBZGRUYXNrEhcudG9kby52MS5BZGRUYXNrUmVxdWVzdBoYLnRvZG8udjEuQWRkVGFza1Jlc3BvbnNlEj8KCEdldFRhc2tzEhgudG9kby52MS5HZXRUYXNrc1JlcXVlc3QaGS50b2RvLnYxLkdldFRhc2tzUmVzcG9uc2VCHVobdG9kb2RlbW8vZ2VuL3RvZG8vdjE7dG9kb3YxYgZwcm90bzM");
+  fileDesc("Cgp0b2RvLnByb3RvEgd0b2RvLnYxIh4KDkFkZFRhc2tSZXF1ZXN0EgwKBHRleHQYASABKAkiLgoPQWRkVGFza1Jlc3BvbnNlEhsKBHRhc2sYASABKAsyDS50b2RvLnYxLlRhc2siEQoPR2V0VGFza3NSZXF1ZXN0IjAKEEdldFRhc2tzUmVzcG9uc2USHAoFdGFza3MYASADKAsyDS50b2RvLnYxLlRhc2siHwoRRGVsZXRlVGFza1JlcXVlc3QSCgoCaWQYASABKAUiJQoSRGVsZXRlVGFza1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiIAoEVGFzaxIKCgJpZBgBIAEoBRIMCgR0ZXh0GAIgASgJMtMBCgtUb2RvU2VydmljZRI8CgdBZGRUYXNrEhcudG9kby52MS5BZGRUYXNrUmVxdWVzdBoYLnRvZG8udjEuQWRkVGFza1Jlc3BvbnNlEj8KCEdldFRhc2tzEhgudG9kby52MS5HZXRUYXNrc1JlcXVlc3QaGS50b2RvLnYxLkdldFRhc2tzUmVzcG9uc2USRQoKRGVsZXRlVGFzaxIaLnRvZG8udjEuRGVsZXRlVGFza1JlcXVlc3QaGy50b2RvLnYxLkRlbGV0ZVRhc2tSZXNwb25zZUIdWht0b2RvZGVtby9nZW4vdG9kby92MTt0b2RvdjFiBnByb3RvMw");
 
 /**
  * @generated from message todo.v1.AddTaskRequest
@@ -77,6 +77,40 @@ export const GetTasksResponseSchema: GenMessage<GetTasksResponse> = /*@__PURE__*
   messageDesc(file_todo, 3);
 
 /**
+ * @generated from message todo.v1.DeleteTaskRequest
+ */
+export type DeleteTaskRequest = Message<"todo.v1.DeleteTaskRequest"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+};
+
+/**
+ * Describes the message todo.v1.DeleteTaskRequest.
+ * Use `create(DeleteTaskRequestSchema)` to create a new message.
+ */
+export const DeleteTaskRequestSchema: GenMessage<DeleteTaskRequest> = /*@__PURE__*/
+  messageDesc(file_todo, 4);
+
+/**
+ * @generated from message todo.v1.DeleteTaskResponse
+ */
+export type DeleteTaskResponse = Message<"todo.v1.DeleteTaskResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message todo.v1.DeleteTaskResponse.
+ * Use `create(DeleteTaskResponseSchema)` to create a new message.
+ */
+export const DeleteTaskResponseSchema: GenMessage<DeleteTaskResponse> = /*@__PURE__*/
+  messageDesc(file_todo, 5);
+
+/**
  * @generated from message todo.v1.Task
  */
 export type Task = Message<"todo.v1.Task"> & {
@@ -96,7 +130,7 @@ export type Task = Message<"todo.v1.Task"> & {
  * Use `create(TaskSchema)` to create a new message.
  */
 export const TaskSchema: GenMessage<Task> = /*@__PURE__*/
-  messageDesc(file_todo, 4);
+  messageDesc(file_todo, 6);
 
 /**
  * @generated from service todo.v1.TodoService
@@ -117,6 +151,14 @@ export const TodoService: GenService<{
     methodKind: "unary";
     input: typeof GetTasksRequestSchema;
     output: typeof GetTasksResponseSchema;
+  },
+  /**
+   * @generated from rpc todo.v1.TodoService.DeleteTask
+   */
+  deleteTask: {
+    methodKind: "unary";
+    input: typeof DeleteTaskRequestSchema;
+    output: typeof DeleteTaskResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_todo, 0);

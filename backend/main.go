@@ -42,6 +42,27 @@ func (s *todoServer) GetTasks(ctx context.Context, req *connect.Request[todov1.G
 	return connect.NewResponse(&todov1.GetTasksResponse{Tasks: tasks}), nil
 }
 
+func (s *todoServer) DeleteTask(ctx context.Context, req *connect.Request[todov1.DeleteTaskRequest]) (*connect.Response[todov1.DeleteTaskResponse], error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	index := -1
+	for i, task := range s.tasks {
+		if task.Id == req.Msg.Id {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		return connect.NewResponse(&todov1.DeleteTaskResponse{Success: false}), nil
+	}
+
+	// 删除任务
+	s.tasks = append(s.tasks[:index], s.tasks[index+1:]...)
+	return connect.NewResponse(&todov1.DeleteTaskResponse{Success: true}), nil
+}
+
 func main() {
 	mux := http.NewServeMux()
 	server := &todoServer{}

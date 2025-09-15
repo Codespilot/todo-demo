@@ -38,12 +38,15 @@ const (
 	TodoServiceAddTaskProcedure = "/todo.v1.TodoService/AddTask"
 	// TodoServiceGetTasksProcedure is the fully-qualified name of the TodoService's GetTasks RPC.
 	TodoServiceGetTasksProcedure = "/todo.v1.TodoService/GetTasks"
+	// TodoServiceDeleteTaskProcedure is the fully-qualified name of the TodoService's DeleteTask RPC.
+	TodoServiceDeleteTaskProcedure = "/todo.v1.TodoService/DeleteTask"
 )
 
 // TodoServiceClient is a client for the todo.v1.TodoService service.
 type TodoServiceClient interface {
 	AddTask(context.Context, *connect.Request[v1.AddTaskRequest]) (*connect.Response[v1.AddTaskResponse], error)
 	GetTasks(context.Context, *connect.Request[v1.GetTasksRequest]) (*connect.Response[v1.GetTasksResponse], error)
+	DeleteTask(context.Context, *connect.Request[v1.DeleteTaskRequest]) (*connect.Response[v1.DeleteTaskResponse], error)
 }
 
 // NewTodoServiceClient constructs a client for the todo.v1.TodoService service. By default, it uses
@@ -69,13 +72,20 @@ func NewTodoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(todoServiceMethods.ByName("GetTasks")),
 			connect.WithClientOptions(opts...),
 		),
+		deleteTask: connect.NewClient[v1.DeleteTaskRequest, v1.DeleteTaskResponse](
+			httpClient,
+			baseURL+TodoServiceDeleteTaskProcedure,
+			connect.WithSchema(todoServiceMethods.ByName("DeleteTask")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // todoServiceClient implements TodoServiceClient.
 type todoServiceClient struct {
-	addTask  *connect.Client[v1.AddTaskRequest, v1.AddTaskResponse]
-	getTasks *connect.Client[v1.GetTasksRequest, v1.GetTasksResponse]
+	addTask    *connect.Client[v1.AddTaskRequest, v1.AddTaskResponse]
+	getTasks   *connect.Client[v1.GetTasksRequest, v1.GetTasksResponse]
+	deleteTask *connect.Client[v1.DeleteTaskRequest, v1.DeleteTaskResponse]
 }
 
 // AddTask calls todo.v1.TodoService.AddTask.
@@ -88,10 +98,16 @@ func (c *todoServiceClient) GetTasks(ctx context.Context, req *connect.Request[v
 	return c.getTasks.CallUnary(ctx, req)
 }
 
+// DeleteTask calls todo.v1.TodoService.DeleteTask.
+func (c *todoServiceClient) DeleteTask(ctx context.Context, req *connect.Request[v1.DeleteTaskRequest]) (*connect.Response[v1.DeleteTaskResponse], error) {
+	return c.deleteTask.CallUnary(ctx, req)
+}
+
 // TodoServiceHandler is an implementation of the todo.v1.TodoService service.
 type TodoServiceHandler interface {
 	AddTask(context.Context, *connect.Request[v1.AddTaskRequest]) (*connect.Response[v1.AddTaskResponse], error)
 	GetTasks(context.Context, *connect.Request[v1.GetTasksRequest]) (*connect.Response[v1.GetTasksResponse], error)
+	DeleteTask(context.Context, *connect.Request[v1.DeleteTaskRequest]) (*connect.Response[v1.DeleteTaskResponse], error)
 }
 
 // NewTodoServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -113,12 +129,20 @@ func NewTodoServiceHandler(svc TodoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(todoServiceMethods.ByName("GetTasks")),
 		connect.WithHandlerOptions(opts...),
 	)
+	todoServiceDeleteTaskHandler := connect.NewUnaryHandler(
+		TodoServiceDeleteTaskProcedure,
+		svc.DeleteTask,
+		connect.WithSchema(todoServiceMethods.ByName("DeleteTask")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/todo.v1.TodoService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TodoServiceAddTaskProcedure:
 			todoServiceAddTaskHandler.ServeHTTP(w, r)
 		case TodoServiceGetTasksProcedure:
 			todoServiceGetTasksHandler.ServeHTTP(w, r)
+		case TodoServiceDeleteTaskProcedure:
+			todoServiceDeleteTaskHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -134,4 +158,8 @@ func (UnimplementedTodoServiceHandler) AddTask(context.Context, *connect.Request
 
 func (UnimplementedTodoServiceHandler) GetTasks(context.Context, *connect.Request[v1.GetTasksRequest]) (*connect.Response[v1.GetTasksResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.TodoService.GetTasks is not implemented"))
+}
+
+func (UnimplementedTodoServiceHandler) DeleteTask(context.Context, *connect.Request[v1.DeleteTaskRequest]) (*connect.Response[v1.DeleteTaskResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.TodoService.DeleteTask is not implemented"))
 }

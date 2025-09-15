@@ -20,12 +20,17 @@ export default function Home() {
     await loadTasks();
   };
 
+  const deleteTask = async (id: number) => {
+    await client.deleteTask({ id });
+    await loadTasks();
+  };
+
   useEffect(() => {
     loadTasks();
   }, []);
 
   return (
-    <main style={{ padding: "2rem" }}>
+   <main style={{ padding: "2rem" }}>
       <h1>待办事项</h1>
       <div>
         <input
@@ -37,7 +42,10 @@ export default function Home() {
       </div>
       <ul>
         {tasks.map((t) => (
-          <li key={t.id}>{t.text}</li>
+          <li key={t.id} style={{ marginBottom: "8px" }}>
+            {t.text}{" "}
+            <button onClick={() => deleteTask(t.id)}>删除</button>
+          </li>
         ))}
       </ul>
     </main>
